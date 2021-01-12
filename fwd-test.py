@@ -2,6 +2,10 @@ import os, io
 
 import datetime
 import base64
+import csv
+import uuid
+import json
+import requests
 from google.cloud import vision
 from google.cloud.vision_v1 import types
 
@@ -65,19 +69,32 @@ def format_food_info(response, food_label):
     expiry_date = entry_date + datetime.timedelta(days=expiry_date_table['Leaf vegetable'])
 
     payload = {
-        "type": response.label_annotations[0].description,
-        "food_product": food_label.description,
-        "entry_date": entry_date.strftime('%Y-%m-%d'),
-        "expiry_date": expiry_date.strftime('%Y-%m-%d')
-    }
+        "data": [{
+            "id": str(uuid.uuid4()),
+            "food_type": response.label_annotations[0].description,
+            "food_product": food_label.description,
+            "entry_date": entry_date.strftime('%Y-%m-%d'),
+            "expiry_date": expiry_date.strftime('%Y-%m-%d')
+        }]}
+
+    json_object = json.dumps(payload, indent = 4)
 
     return payload
+
+def store_payload(payload):
+
+    headers = {'Content-Type': 'application/json'}
+
+    response = requests.post("https://sheetdb.io/api/v1/1cszrsqnafe5t", headers=headers, json=payload)
+    print(response.json())
+    # error handle this somehow (visual queue?)
 
 def main():
     client, image = init()
     processed_image = load_image()
     response, food_label = detect_label(client, image, processed_image)
     payload = format_food_info(response, food_label)
+    store_payload(payload)
     print(payload)
 
 main()
