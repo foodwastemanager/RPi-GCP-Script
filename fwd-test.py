@@ -71,7 +71,7 @@ def format_food_info(response, food_label):
     payload = {
         "data": [{
             "id": str(uuid.uuid4()),
-            "type": response.label_annotations[0].description,
+            "food_type": response.label_annotations[0].description,
             "food_product": food_label.description,
             "entry_date": entry_date.strftime('%Y-%m-%d'),
             "expiry_date": expiry_date.strftime('%Y-%m-%d')
@@ -79,34 +79,23 @@ def format_food_info(response, food_label):
 
     json_object = json.dumps(payload, indent = 4)
 
-    return json_object
+    return payload
 
-def store_payload():
+def store_payload(payload):
 
-    # response = requests.post("https://sheetdb.io/api/v1/1cszrsqnafe5t", payload)
     headers = {'Content-Type': 'application/json'}
-    temp = {
-        "data": [{
-            "Food": 'chicken',
-            "Registration Date": '12-01-1999',
-            "Expiration Date": '12-01-1999',
-        }]
-    }
 
-    json_object = json.dumps(temp, indent = 4)
-    print(json_object)
-
-    response = requests.post("https://sheetdb.io/api/v1/1cszrsqnafe5t", headers=headers, json=temp)
-    # response = requests.get("https://sheetdb.io/api/v1/1cszrsqnafe5t/keys")
+    response = requests.post("https://sheetdb.io/api/v1/1cszrsqnafe5t", headers=headers, json=payload)
     print(response.json())
+    # error handle this somehow (visual queue?)
 
 def main():
-    # client, image = init()
-    # processed_image = load_image()
-    # response, food_label = detect_label(client, image, processed_image)
-    # payload = format_food_info(response, food_label)
-    store_payload()
-    #print(payload)
+    client, image = init()
+    processed_image = load_image()
+    response, food_label = detect_label(client, image, processed_image)
+    payload = format_food_info(response, food_label)
+    store_payload(payload)
+    print(payload)
 
 main()
 
