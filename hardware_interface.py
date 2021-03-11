@@ -12,6 +12,7 @@ cancel = 16
 
 #Setup Camera
 camera = PiCamera()
+camera.resolution = (640, 480)
 
 GPIO.setup(confirm, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(cancel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
