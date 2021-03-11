@@ -1,5 +1,4 @@
 import os, io
-
 import datetime
 import base64
 import csv
@@ -11,9 +10,9 @@ from google.cloud import vision
 from google.cloud.vision_v1 import types
 
 # Will have to take in file name
-FILE_NAME = "grape.jpeg"
+FILE_NAME = '/home/pi/Desktop/capture.jpg'
 # Path will have to change
-FOLDER_PATH = r'/Users/david.murga/Repos/School/fwd-capstone'
+FOLDER_PATH = os.getcwd()
 
 food_types = ['Fruit']
 
@@ -33,7 +32,7 @@ def load_image():
     # Using a URL
     #image.source.image_uri = 'https://cdn-prod.medicalnewstoday.com/content/images/articles/270/270609/spinach.jpg'
 
-    with io.open(os.path.join(FOLDER_PATH, FILE_NAME), 'rb') as image_file:
+    with io.open(FILE_NAME, 'rb') as image_file:
         content = image_file.read()
 
     processed_image = types.Image(content=content)
@@ -143,7 +142,7 @@ def store_payload(payload):
     print(response.json())
     # error handle this somehow (visual prompt?)
 
-def main():
+def send_image():
     client, image = init()
     processed_image = load_image()
     response, food_label, result = detect_label(client, image, processed_image)
@@ -151,5 +150,4 @@ def main():
         payload = format_food_info(response, food_label)
         store_payload(payload)
 
-main()
 
