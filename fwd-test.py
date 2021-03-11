@@ -110,26 +110,26 @@ def format_food_info(response, food_label):
     #         "max_expiry_date": max_expiry_date.strftime('%Y-%m-%d')
     #     }]}
 
-    # payload = {
-    #     "data": [{
-    #         "id": str(uuid.uuid4()),
-    #         "food_product": food_label.name,
-    #         "entry_date": entry_date_format,
-    #         "min_expiry_date": min_expiry_date_format,
-    #         "max_expiry_date": max_expiry_date_format
-    #     }]}
+    payload = {
+        "data": [{
+            "id": str(uuid.uuid4()),
+            "food_product": food_label.name,
+            "entry_date": entry_date_format,
+            "min_expiry_date": min_expiry_date_format,
+            "max_expiry_date": max_expiry_date_format
+        }]}
 
-    data = [{
-        "id": str(uuid.uuid4()),
-        "food_product": food_label.name,
-        "entry_date": entry_date_format,
-        "min_expiry_date": min_expiry_date_format,
-        "max_expiry_date": max_expiry_date_format
-        }]
+    # data = [{
+    #     "id": str(uuid.uuid4()),
+    #     "food_product": food_label.name,
+    #     "entry_date": entry_date_format,
+    #     "min_expiry_date": min_expiry_date_format,
+    #     "max_expiry_date": max_expiry_date_format
+    #     }]
 
     #print(payload)
 
-    json_object = json.dumps(data, indent = 4)
+    json_object = json.dumps(payload, indent = 4)
 
     print(json_object)
 
