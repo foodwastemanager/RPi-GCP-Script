@@ -20,7 +20,7 @@ food_types = ['Fruit']
 ## Initializing
 def init():
     ## TODO: get a key unique to project (not using personal email)
-    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = './FWDCapstone-91273bcabcdc.json'
+    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = './fwd-capstone-61889238a64c.json'
 
     client = vision.ImageAnnotatorClient()
 
@@ -94,8 +94,8 @@ def format_food_info(response, food_label):
     min_expiry_date = entry_date + datetime.timedelta(expiry_date[0])
     max_expiry_date = entry_date + datetime.timedelta(expiry_date[1])
 
-    entry_date_format = entry_date.strftime('%Y-%m-%d'),
-    min_expiry_date_format = min_expiry_date.strftime('%Y-%m-%d'),
+    entry_date_format = entry_date.strftime('%Y-%m-%d')
+    min_expiry_date_format = min_expiry_date.strftime('%Y-%m-%d')
     max_expiry_date_format = max_expiry_date.strftime('%Y-%m-%d')
 
 
@@ -110,20 +110,31 @@ def format_food_info(response, food_label):
     #         "max_expiry_date": max_expiry_date.strftime('%Y-%m-%d')
     #     }]}
 
-    payload = {
-        "data": [{
-            "id": str(uuid.uuid4()),
-            "food_product": food_label.name,
-            "entry_date": entry_date_format,
-            "min_expiry_date": min_expiry_date_format,
-            "max_expiry_date": max_expiry_date_format
-        }]}
+    # payload = {
+    #     "data": [{
+    #         "id": str(uuid.uuid4()),
+    #         "food_product": food_label.name,
+    #         "entry_date": entry_date_format,
+    #         "min_expiry_date": min_expiry_date_format,
+    #         "max_expiry_date": max_expiry_date_format
+    #     }]}
 
-    print(payload)
+    data = [{
+        "id": str(uuid.uuid4()),
+        "food_product": food_label.name,
+        "entry_date": entry_date_format,
+        "min_expiry_date": min_expiry_date_format,
+        "max_expiry_date": max_expiry_date_format
+        }]
 
-    json_object = json.dumps(payload, indent = 4)
+    #print(payload)
 
-    return payload
+    json_object = json.dumps(data, indent = 4)
+
+    print(json_object)
+
+    #return payload
+    return json_object
 
 def store_payload(payload):
 
